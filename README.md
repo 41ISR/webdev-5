@@ -1,5 +1,9 @@
 # OMDB API
 
+## API Ключ
+
+`505480d7`
+
 ## Описание проекта
 Необходимо создать React-приложение для поиска и просмотра информации о фильмах с использованием OMDB API. Приложение должно состоять из трех основных страниц с навигацией между ними.
 
@@ -12,13 +16,7 @@
 
 ## Функциональные требования
 
-### Страница "Популярные фильмы" (`/`)
-- Отображение списка популярных фильмов при загрузке страницы
-- Карточки фильмов с основной информацией (постер, название, год)
-- Возможность перехода к детальной информации о фильме
-- Пагинация или загрузка дополнительных результатов
-
-### Страница "Поиск" (`/search`)
+### Страница "Поиск" (`/`)
 - Форма для ввода поискового запроса
 - Отображение результатов поиска в виде карточек
 - Обработка состояний: загрузка, ошибка, отсутствие результатов
@@ -81,8 +79,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/" element={<SearchPage />} />
         <Route path="/movie/:id" element={<MovieDetailsPage />} />
       </Routes>
     </BrowserRouter>
@@ -111,7 +108,6 @@ const { id } = useParams(); // получение :id из URL
 - Создать функции для работы с OMDB API
 - Реализовать поиск фильмов по запросу
 - Реализовать получение детальной информации о фильме
-- Реализовать получение популярных фильмов
 
 **Примеры кода для понимания:**
 
@@ -185,54 +181,7 @@ const LoadingSpinner = () => (
 );
 ```
 
-### Шаг 5: Страница популярных фильмов
-
-**Что делать:**
-- Создать компонент главной страницы
-- Реализовать загрузку популярных фильмов при монтировании
-- Добавить возможность загрузки дополнительных результатов
-- Обработать состояния загрузки и ошибок
-
-**Примеры кода для понимания:**
-
-Базовая структура состояния:
-```javascript
-const [movies, setMovies] = useState([]);
-const [loading, setLoading] = useState(false);
-const [error, setError] = useState(null);
-const [page, setPage] = useState(1);
-```
-
-Загрузка данных при монтировании:
-```javascript
-useEffect(() => {
-  const loadMovies = async () => {
-    setLoading(true);
-    try {
-      const data = await fetchPopularMovies();
-      setMovies(data.Search);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-  loadMovies();
-}, []);
-```
-
-Навигация к деталям фильма:
-```javascript
-import { useNavigate } from 'react-router-dom';
-
-const navigate = useNavigate();
-const handleMovieClick = (movieId) => {
-  navigate(`/movie/${movieId}`);
-};
-```
-
-### Шаг 6: Страница поиска
+### Шаг 5: Страница поиска
 
 **Что делать:**
 - Создать форму поиска с полем ввода
@@ -268,6 +217,7 @@ const handleSubmit = async (e) => {
 ```
 
 Условный рендеринг результатов:
+
 ```javascript
 {loading && <LoadingSpinner />}
 {error && <div className="error">{error}</div>}
@@ -281,7 +231,7 @@ const handleSubmit = async (e) => {
 )}
 ```
 
-### Шаг 7: Страница деталей фильма (30 минут)
+### Шаг 6: Страница деталей фильма
 
 **Что делать:**
 - Создать компонент для отображения детальной информации
@@ -292,6 +242,7 @@ const handleSubmit = async (e) => {
 **Примеры кода для понимания:**
 
 Получение и использование параметра URL:
+
 ```javascript
 const { id } = useParams();
 const [movie, setMovie] = useState(null);
@@ -339,7 +290,7 @@ const goBack = () => navigate(-1);
 )}
 ```
 
-### Шаг 8: Стилизация и финальная доработка (30 минут)
+### Шаг 7: Стилизация и финальная доработка
 
 **Что делать:**
 - Создать базовые стили для всех компонентов
@@ -375,12 +326,10 @@ src/
     LoadingSpinner.js
     ErrorMessage.js
   pages/
-    HomePage.js
     SearchPage.js
     MovieDetailsPage.js
   services/
-    movieService.js
-  App.js
+    movieService.js App.js
   App.css
 ```
 
