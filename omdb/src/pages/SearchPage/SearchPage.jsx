@@ -1,3 +1,5 @@
+import "./SearchPage.css"
+
 const SearchPage = () => {
     return (
         <>
